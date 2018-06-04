@@ -1,7 +1,7 @@
 const express = require("express");
 const passport = require('passport');
 const authRoutes = express.Router();
-const User = require("../models/User");
+const Users = require("../models/Users");
 
 // Bcrypt to encrypt passwords
 const bcrypt = require("bcrypt");
@@ -32,7 +32,7 @@ authRoutes.post("/signup", (req, res, next) => {
     return;
   }
 
-  User.findOne({ username }, "username", (err, user) => {
+  Users.findOne({ username }, "username", (err, user) => {
     if (user !== null) {
       res.render("auth/signup", { message: "The username already exists" });
       return;
@@ -41,7 +41,7 @@ authRoutes.post("/signup", (req, res, next) => {
     const salt = bcrypt.genSaltSync(bcryptSalt);
     const hashPass = bcrypt.hashSync(password, salt);
 
-    const newUser = new User({
+    const newUser = new Users({
       username,
       password: hashPass,
       role:"teacher"
