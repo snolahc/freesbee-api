@@ -32,7 +32,7 @@ const userSchema = new Schema({
   media: [{
       type: Schema.Types.ObjectId,
       ref: "Media"
-    }];
+    }],
 
   avatars: [{
     type: Schema.Types.ObjectId,
