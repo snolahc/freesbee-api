@@ -3,22 +3,23 @@ const Schema   = mongoose.Schema;
 
 const userSchema = new Schema({
 
-  username: {type: String, required: true},
-  password: {type: String, required: true},
+  username: {type: String, required: true, unique: true},
+  password: {type: String, required: false},
 
-  firstName: {type: String, required: false},
-  lastName: {type: String, required: false},
-  jobTitle: {type: String, required: false},
+  name: {type: String, required: false},
+  title: {type: String, required: false},
   headline: {type: String, required: false},
   location: {type: String, required: false},
 
   address: [{
-    addr_line0: {type: String, required: false},
-    addr_line1: {type: String, required: false},
-    zipCode: {type: String, required: false},
+    address_1: {type: String, required: false},
+    address_2: {type: String, required: false},
+    postal_code: {type: String, required: false},
     city: {type: String, required: false},
-    state: {type: String, required: false},
+    region: {type: String, required: false},
     country: {type: String, required: false},
+    latitude: {type: Number, required: false},
+    longitude: {type: Number, required: false},
     main: {type: Boolean, default: true},
   }],
 
@@ -44,6 +45,7 @@ const userSchema = new Schema({
     ref: "User"
   }],
 
+// ~ family ?
   delegates: [{
     type: Schema.Types.ObjectId,
     ref: "User"

@@ -7,6 +7,12 @@ const avatarSchema = new Schema({
   username: {type: String, required: true},
   api_key: {type: String, required: false},
   oauth_token: {type: String, required: false},
+  remote_profile_json: {type: String, required: false},
+
+  linked_user: {
+    type: Schema.Types.ObjectId,
+    ref: "User"
+  },
 
 }, {
   timestamps: {
