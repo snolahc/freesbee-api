@@ -1,51 +1,13 @@
 const express = require("express");
 const passport = require('passport');
-const User = require("../models/User");
-const nodemailer = require("nodemailer");
-
 const authRoutes = express.Router();
-const transport = nodemailer.createTransport({
-
-  service: "Gmail",
-  auth: {
-    user: process.env.mailUser,
-    pass: process.env.mailPass
-  }
-})
+const User = require("../models/User");
 
 // Bcrypt to encrypt passwords
 const bcrypt = require("bcrypt");
-const bcryptSalt = 4;
+const bcryptSalt = 10;
 
-//message string when there is error
-let errMsg = "";
 
-authRoutes.post("/login", (req, res, next) => {
-  passport.authenticate("local", (err, theUser) => {
-    if(err) {
-      errMsg = " ERROR --> passport.authenticate "
-      errorHandler( errMsg, next);
-      return;
-    } 
-    else if(!theUser) {
-      errMsg = "Log in failed";
-      errorHandler( errMsg, next);
-      return;
-    } else if(!theUser.emailConfirmed) {
-      const err = new Error();
-      errMsg = "You must confirm your email address before you can log in";
-      errorHandler( errMsg, next);
-      return;
-    } else {
-      req.login(theUser, () => {
-        theUser.encryptedPassword = undefined;
-        res.json({theUser});
-      });
-    }
-  })(req, res, next) 
-});
-
-//past
 authRoutes.get("/login", (req, res, next) => {
   res.render("auth/login", { "message": req.flash("error") });
 });
@@ -82,6 +44,7 @@ authRoutes.post("/signup", (req, res, next) => {
     const newUser = new User({
       username,
       password: hashPass,
+      role:"teacher"
     });
 
     newUser.save((err) => {
